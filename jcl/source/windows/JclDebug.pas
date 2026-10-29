@@ -5234,7 +5234,7 @@ end;
 type
   TJclStackBaseListClass = class of TJclStackBaseList;
 
-  TJclGlobalStackList = class(TThreadList)
+  TJclGlobalStackList = class(TThreadList<TJclStackBaseList>)
   private
     FLockedTID: DWORD;
     FTIDLocked: Boolean;
@@ -5277,7 +5277,7 @@ begin
     ReplacedObj := FindObject(AObject.ThreadID, TJclStackBaseListClass(AObject.ClassType));
     if ReplacedObj <> nil then
     begin
-      Remove(ReplacedObj);
+      Remove(TJclStackBaseList(ReplacedObj));
       ReplacedObj.Free;
     end;
     Add(AObject);
@@ -5340,7 +5340,7 @@ procedure TJclGlobalStackList.ItemDestroyed(Sender: TObject);
 begin
   with LockList do
   try
-    Remove(Sender);
+    Remove(TJclStackBaseList(Sender));
   finally
     UnlockList;
   end;
@@ -5820,9 +5820,20 @@ function RtlVirtualUnwind(AHandlerType: DWORD; AImageBase, AControlPc: DWORD64; 
 
 // Returns the lowest address of the current thread's committed stack (NT_TIB64.StackLimit), as GetStackTop returns
 // its base.
+{$ifdef fpc}
+procedure GetCurrentThreadStackLimits(out LowLimit, HighLimit: NativeUint); stdcall; external kernel32;
+{$endif}
+
 function GetStackLimit: DWORD64;
+{$ifdef fpc}
+var
+  HighLimit: NativeUInt;
+begin
+  GetCurrentThreadStackLimits(result, HighLimit);
+{$else}
 asm
         MOV     RAX, GS:[ABS 16]
+{$endif}
 end;
 
 // The frames are walked here with RtlVirtualUnwind rather than with CaptureStackBackTrace, which ends the stack at the
