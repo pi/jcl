@@ -304,7 +304,7 @@ function NearestHigherMultiple(Num, Multiplicator: Int64): Int64; overload;
 ///   Get the next multiple of a given multiplicator which is higher than
 ///   the number given. Example: Num = 21, Multiplicator = 5, Result is 25
 /// </summary>
-function NearestHigherMultiple(Num: Float; Multiplicator: Integer): Integer; overload
+function NearestHigherMultiple(Num: Float; Multiplicator: Integer): Integer; overload;
 /// <summary>
 ///   Get the next multiple of a given multiplicator which is higher than
 ///   the number given. Example: Num = 21, Multiplicator = 5, Result is 25
@@ -767,7 +767,9 @@ type
     function AsString: string;
     function Conjugate: TRectComplex;
     function IsZero: Boolean;
+    {$IFDEF CPU32}
     function IsInfinite: Boolean;
+    {$endif}
     {$ENDIF SUPPORTS_CLASS_OPERATORS}
   end;
 
@@ -794,7 +796,9 @@ type
     function AsString: string;
     function Conjugate: TPolarComplex;
     function IsZero: Boolean;
+    {$IFDEF CPU32}
     function IsInfinite: Boolean;
+    {$endif}
     function Power(const Exponent: TRectComplex): TPolarComplex; overload;
     function Power(const Exponent: Float): TPolarComplex; overload;
     function Power(const Exponent: Integer): TPolarComplex; overload;
@@ -4743,6 +4747,7 @@ begin
   Result := JclMath.IsZero(Self);
 end;
 
+{$IFDEF CPU32}
 function TRectComplex.IsInfinite: Boolean;
 begin
   {$IFDEF DELPHI64_TEMPORARY}
@@ -4755,6 +4760,7 @@ begin
   Result := JclMath.IsInfinite(Self);
   {$ENDIF ~DELPHI64_TEMPORARY}
 end;
+{$endif}
 
 { TPolarComplex }
 
@@ -4840,6 +4846,7 @@ begin
   Result := JclMath.IsZero(Self);
 end;
 
+{$IFDEF CPU32}
 function TPolarComplex.IsInfinite: Boolean;
 begin
   {$IFDEF DELPHI64_TEMPORARY}
@@ -4852,6 +4859,7 @@ begin
   Result := JclMath.IsInfinite(Self);
   {$ENDIF ~DELPHI64_TEMPORARY}
 end;
+{$endif}
 
 function TPolarComplex.Power(const Exponent: TRectComplex): TPolarComplex;
 begin

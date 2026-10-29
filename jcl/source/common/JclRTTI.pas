@@ -2223,12 +2223,12 @@ begin
   if TypeData.elType = nil then
   begin
     if TypeData.elType2 <> nil then
-      Result := JclTypeInfo(TypeData.elType2^)
+      Result := JclTypeInfo(TypeData.elType2)
     else
       Result := nil;
   end
   else
-    Result := JclTypeInfo(TypeData.elType^);
+    Result := JclTypeInfo(TypeData.elType);
 end;
 
 function TJclDynArrayTypeInfo.GetElementsNeedCleanup: Boolean;
@@ -2503,7 +2503,7 @@ begin
       Name := TypeName;
     end;
     TypeData := GetTypeData(Result);
-    TypeData^.BaseType := AllocMem(SizeOf(Pointer));
+    //TypeData^.BaseType := AllocMem(SizeOf(Pointer));
     if Length(Literals) < 256 then
       TypeData^.OrdType := otUByte
     else
@@ -2513,7 +2513,7 @@ begin
       TypeData^.OrdType := otULong;
     TypeData^.MinValue := 0;
     TypeData^.MaxValue := Length(Literals)-1;
-    TypeData^.BaseType{$IFDEF BORLAND}^{$ENDIF} := Result;   // No sub-range: basetype points to itself
+    //TypeData^.BaseType{$IFDEF BORLAND}^{$ENDIF} := Result;   // No sub-range: basetype points to itself
     CurName := @TypeData^.NameList;
     for I := Low(Literals) to High(Literals) do
     begin
@@ -2600,8 +2600,8 @@ begin
     TypeData^.OrdType := GetTypeData(BaseType)^.OrdType;
     TypeData^.MinValue := MinValue;
     TypeData^.MaxValue := MaxValue;
-    TypeData^.BaseType := AllocMem(SizeOf(Pointer));
-    TypeData^.BaseType{$IFDEF BORLAND}^{$ENDIF} := BaseType;
+    //TypeData^.BaseType := AllocMem(SizeOf(Pointer));
+    //TypeData^.BaseType{$IFDEF BORLAND}^{$ENDIF} := BaseType;
     AddType(Result);
   except
     try
@@ -2807,7 +2807,7 @@ begin
     TypeData^.CompType^ := BaseType;
     {$ENDIF BORLAND}
     {$IFDEF FPC}
-    TypeData^.CompType := BaseType;
+    //TypeData^.CompType := BaseType;
     {$ENDIF FPC}
     AddType(Result);
   except

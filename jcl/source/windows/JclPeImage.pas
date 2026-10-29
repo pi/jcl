@@ -6750,7 +6750,7 @@ var
 function InternalReadProcMem(ProcessHandle: THandle; Address: DWORD;
   Buffer: Pointer; Size: Integer): Boolean;
 var
-  BR: DWORD;
+  BR: PTRUINT;
 {$ENDIF}
 begin
   BR := 0;

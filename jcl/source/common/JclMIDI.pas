@@ -595,7 +595,7 @@ end;
 
 procedure TJclMIDIOut.SetRunningStatusEnabled(const Value: Boolean);
 begin
-  FMIDIStatus := MIDIInvalidStatus;
+  PByte(@FMIDIStatus)^ := 0{MIDIInvalidStatus};
   FRunningStatusEnabled := Value;
 end;
 

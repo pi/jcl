@@ -1419,9 +1419,10 @@ begin
       end;
     end;
   end;
-
+{$ifndef fpc}
   if PeIsNameMangled(Result) <> umNotMangled then
     Result := PeBorUnmangleName(Result);
+{$endif}
 end;
 
 procedure TJclTD32InfoParser.GenerateUnmangledNames;
